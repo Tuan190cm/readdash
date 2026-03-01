@@ -811,33 +811,6 @@ function doCompareCustom(){
 }
 
 /* ------------------------ Backup / Restore ------------------------ */
-function openDataModal(){
-  $("modalData").classList.remove("hidden");
-  $("dataArea").value = "";
-}
-function closeDataModal(){
-  $("modalData").classList.add("hidden");
-}
-function exportData(){
-  $("dataArea").value = JSON.stringify(state, null, 2);
-  $("dataArea").focus();
-}
-function importData(file){
-  const reader = new FileReader();
-  reader.onload = () => {
-    try{
-      const obj = JSON.parse(String(reader.result));
-      state = { ...structuredClone(DEFAULT_STATE), ...obj };
-      saveState();
-      closeDataModal();
-      renderAll();
-      alert("Import OK");
-    } catch {
-      alert("JSON lỗi.");
-    }
-  };
-  reader.readAsText(file);
-}
 
 /* ------------------------ Safety helpers ------------------------ */
 function escapeHtml(s){
@@ -900,14 +873,7 @@ function bindEvents(){
   };
 
   // data modal
-  $("btnBackup").onclick = openDataModal;
-  $("closeData").onclick = closeDataModal;
-  $("btnExport").onclick = exportData;
-  $("fileImport").addEventListener("change", (e) => {
-    const f = e.target.files?.[0];
-    if (f) importData(f);
-    e.target.value = "";
-  });
+
 
   // register sw
   if ("serviceWorker" in navigator) {
