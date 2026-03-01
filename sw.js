@@ -1,4 +1,4 @@
-const CACHE_NAME = "readdash-v5";
+const CACHE_NAME = "readdash-v6";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.json"];
 
 self.addEventListener("install", (e) => {
