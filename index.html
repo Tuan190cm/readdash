@@ -18,7 +18,7 @@
         <div class="subtitle" id="subtitle">Dashboard đọc sách</div>
       </div>
     </div>
-    <button class="ghost" id="btnBackup" title="Export/Import dữ liệu">↕︎ Data</button>
+   
   </header>
 
   <main class="container">
@@ -338,22 +338,7 @@
     </div>
   </div>
 
-  <div class="modal hidden" id="modalData">
-    <div class="modal-content">
-      <div class="row between">
-        <div class="h1">Data</div>
-        <button class="ghost" id="closeData">✕</button>
-      </div>
-      <div class="muted small">Export JSON để backup, hoặc Import để restore.</div>
-      <div class="row gap wrap">
-        <button class="btn primary" id="btnExport">Export</button>
-        <label class="btn">
-          Import <input id="fileImport" type="file" accept="application/json" style="display:none" />
-        </label>
-      </div>
-      <textarea id="dataArea" class="input" rows="10" placeholder="JSON sẽ hiện ở đây khi export…"></textarea>
-    </div>
-  </div>
+ 
 
   <script src="./app.js"></script>
 </body>
