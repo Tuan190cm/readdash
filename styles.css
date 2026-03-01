@@ -1,0 +1,119 @@
+:root{
+  --bg:#0b0b0c;
+  --card:#141416;
+  --muted:#a5a5aa;
+  --text:#f2f2f2;
+  --line:#2a2a2d;
+  --primary:#7c5cff;
+  --danger:#ff4d4d;
+  --good:#28d17c;
+  --warn:#ffcc00;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+  background:var(--bg); color:var(--text);
+}
+.topbar{
+  position:sticky; top:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 14px; background:rgba(11,11,12,.92); backdrop-filter: blur(8px);
+  border-bottom:1px solid var(--line); z-index:20;
+}
+.brand{display:flex; gap:10px; align-items:center}
+.logo{
+  width:36px;height:36px;border-radius:10px;background:var(--primary);
+  display:grid; place-items:center; font-weight:800;
+}
+.title{font-weight:800}
+.subtitle{color:var(--muted); font-size:12px}
+.container{padding:14px; max-width:1100px; margin:0 auto}
+.tabs{
+  display:flex; gap:8px; overflow:auto; padding-bottom:8px; margin-bottom:10px;
+}
+.tab{
+  border:1px solid var(--line); color:var(--text); background:transparent;
+  padding:10px 12px; border-radius:12px; font-weight:700; cursor:pointer;
+  white-space:nowrap;
+}
+.tab.active{background:var(--card); border-color:#3a3a40}
+.panel{display:block}
+.hidden{display:none}
+.grid2{display:grid; grid-template-columns:1fr; gap:12px}
+@media(min-width:900px){ .grid2{grid-template-columns:1fr 1fr;} }
+
+.card{
+  background:var(--card); border:1px solid var(--line);
+  border-radius:16px; padding:14px;
+}
+.card-h{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+.h1{font-weight:900; font-size:16px}
+.h2{font-weight:900; font-size:20px}
+.big{font-size:42px; font-weight:1000; margin:10px 0}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.row{display:flex; align-items:center}
+.wrap{flex-wrap:wrap}
+.gap{gap:8px}
+.between{justify-content:space-between}
+.sep{border:0;border-top:1px solid var(--line); margin:12px 0}
+
+.btn, .ghost{
+  border:1px solid var(--line); background:transparent; color:var(--text);
+  padding:10px 12px; border-radius:12px; font-weight:800; cursor:pointer;
+}
+.btn.primary{background:var(--primary); border-color:transparent}
+.btn.danger{background:var(--danger); border-color:transparent}
+.ghost{padding:10px 10px}
+.input{
+  width:100%;
+  background:#0f0f11; border:1px solid var(--line);
+  color:var(--text); padding:10px 12px; border-radius:12px;
+}
+.field{width:100%}
+.pill{
+  background:#0f0f11; border:1px solid var(--line); color:var(--muted);
+  padding:8px 10px; border-radius:999px; font-size:12px; font-weight:800;
+}
+.progress{height:10px; background:#0f0f11; border:1px solid var(--line); border-radius:999px; overflow:hidden}
+.bar{height:100%; width:0%; background:var(--good)}
+
+.mini-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px}
+@media(min-width:900px){ .mini-grid{grid-template-columns:1fr 1fr 1fr 1fr;} }
+.mini{
+  background:#0f0f11; border:1px solid var(--line); border-radius:14px; padding:10px;
+}
+.note{
+  margin-top:12px; padding:10px 12px; border-radius:14px;
+  background:#0f0f11; border:1px solid var(--line); color:var(--muted);
+}
+.list{display:flex; flex-direction:column; gap:8px; margin-top:10px}
+.item{
+  display:flex; justify-content:space-between; gap:10px; align-items:center;
+  padding:10px 12px; border-radius:14px; background:#0f0f11; border:1px solid var(--line);
+}
+.item b{font-size:14px}
+.item .meta{color:var(--muted); font-size:12px}
+.item .actions{display:flex; gap:6px}
+.badge{
+  font-size:12px; font-weight:900;
+  padding:6px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted);
+}
+.badge.good{border-color:rgba(40,209,124,.35); color:var(--good)}
+.badge.warn{border-color:rgba(255,204,0,.35); color:var(--warn)}
+
+.compare{
+  margin-top:10px; padding:12px; border-radius:14px;
+  background:#0f0f11; border:1px solid var(--line);
+  white-space:pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size:12px; color:#d9d9de;
+}
+
+.modal{
+  position:fixed; inset:0; background:rgba(0,0,0,.55);
+  display:flex; align-items:center; justify-content:center; padding:14px; z-index:50;
+}
+.modal-content{
+  width:min(560px, 100%);
+  background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px;
+}
