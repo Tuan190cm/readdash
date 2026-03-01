@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <title>ReadDash</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">RD</div>
+      <div>
+        <div class="title">ReadDash</div>
+        <div class="subtitle" id="subtitle">Dashboard đọc sách</div>
+      </div>
+    </div>
+    <button class="ghost" id="btnBackup" title="Export/Import dữ liệu">↕︎ Data</button>
+  </header>
+
+  <main class="container">
+    <nav class="tabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="books">Books</button>
+      <button class="tab" data-tab="stats">Stats</button>
+      <button class="tab" data-tab="compare">Compare</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+
+    <!-- DASHBOARD -->
+    <section class="panel" id="tab-dashboard">
+      <div class="grid2">
+        <div class="card">
+          <div class="card-h">
+            <div>
+              <div class="h1">Hôm nay cần đọc</div>
+              <div class="muted" id="todayHint">Để kịp 500 trang/tuần</div>
+            </div>
+            <div class="pill" id="todayPill">Mode: Normal</div>
+          </div>
+
+          <div class="big" id="todayTarget">—</div>
+          <div class="row gap">
+            <button class="btn" data-mode="chill">Chill</button>
+            <button class="btn primary" data-mode="normal">Normal</button>
+            <button class="btn" data-mode="push">Push</button>
+          </div>
+
+          <hr class="sep" />
+
+          <div class="row between">
+            <div class="muted">Tiến độ tuần</div>
+            <div class="muted" id="weekRange">—</div>
+          </div>
+          <div class="progress">
+            <div class="bar" id="barWeekPages"></div>
+          </div>
+          <div class="row between">
+            <div><b id="weekPagesText">—</b> / 500 trang</div>
+            <div class="muted"><span id="weekBooksText">—</span> / 2 quyển</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h1">Quick Log</div>
+          <div class="muted">Chọn quyển đang đọc và log nhanh</div>
+
+          <div class="row gap">
+            <select id="selectBook" class="input"></select>
+            <input id="inputMinutes" class="input" type="number" min="0" placeholder="phút (tuỳ chọn)" />
+          </div>
+
+          <div class="row gap wrap">
+            <button class="btn" data-pages="10">+10</button>
+            <button class="btn" data-pages="20">+20</button>
+            <button class="btn" data-pages="50">+50</button>
+            <button class="btn" data-pages="100">+100</button>
+            <button class="btn" id="btnCustomLog">Log…</button>
+          </div>
+
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="muted">Daily streak</div>
+              <div class="h2" id="dailyStreak">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Weekly streak (≥500)</div>
+              <div class="h2" id="weeklyStreak">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Điểm tuần</div>
+              <div class="h2" id="weekPoints">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Tốc độ (trang/giờ)</div>
+              <div class="h2" id="speedPH">—</div>
+            </div>
+          </div>
+
+          <div class="note" id="insightBox">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKS -->
+    <section class="panel hidden" id="tab-books">
+      <div class="grid2">
+        <div class="card">
+          <div class="h1">Thêm sách</div>
+          <div class="row gap">
+            <input id="bookTitle" class="input" placeholder="Tên sách" />
+            <input id="bookPages" class="input" type="number" min="1" placeholder="Tổng trang" />
+          </div>
+          <div class="row gap">
+            <input id="bookAuthor" class="input" placeholder="Tác giả (tuỳ chọn)" />
+            <button class="btn primary" id="btnAddBook">Add</button>
+          </div>
+          <div class="muted small">
+            Theo dõi theo quyển. Tuần vẫn phải đạt <b>≥500 trang</b> (thiếu thì tự đẻ quyển thứ 3).
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h1">Đang đọc</div>
+          <div id="readingList" class="list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row between">
+          <div class="h1">Tất cả sách</div>
+          <div class="row gap">
+            <button class="btn" id="btnFilterAll">All</button>
+            <button class="btn" id="btnFilterReading">Reading</button>
+            <button class="btn" id="btnFilterFinished">Finished</button>
+          </div>
+        </div>
+        <div id="bookList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="panel hidden" id="tab-stats">
+      <div class="grid2">
+        <div class="card">
+          <div class="row between">
+            <div>
+              <div class="h1">Pages / day (7 ngày)</div>
+              <div class="muted">Bar chart</div>
+            </div>
+            <div class="pill" id="avg7">—</div>
+          </div>
+          <canvas id="chart7" height="160"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="row between">
+            <div>
+              <div class="h1">Weekly pages (8 tuần)</div>
+              <div class="muted">Line chart, mốc 500</div>
+            </div>
+            <div class="pill" id="avgW8">—</div>
+          </div>
+          <canvas id="chartW8" height="160"></canvas>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="h1">Chất lượng đọc (basic)</div>
+          <div class="muted">Notes density + tốc độ + consistency</div>
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="muted">Notes/100 trang</div>
+              <div class="h2" id="notesDensity">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Sessions / tuần</div>
+              <div class="h2" id="sessionsWeek">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Avg trang / session</div>
+              <div class="h2" id="pps">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Quality score</div>
+              <div class="h2" id="qScore">—</div>
+            </div>
+          </div>
+          <div class="note" id="qualityHint">—</div>
+        </div>
+
+        <div class="card">
+          <div class="h1">Session log</div>
+          <div class="muted">Gần đây</div>
+          <div id="sessionList" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section class="panel hidden" id="tab-compare">
+      <div class="grid2">
+        <div class="card">
+          <div class="h1">So sánh nhanh</div>
+          <div class="row gap wrap">
+            <button class="btn primary" id="btnWoW">Tuần này vs Tuần trước</button>
+            <button class="btn" id="btnMoM">Tháng này vs Tháng trước</button>
+          </div>
+          <div class="compare" id="compareQuick">—</div>
+        </div>
+
+        <div class="card">
+          <div class="h1">So sánh tuỳ chọn</div>
+          <div class="muted">Chọn 2 khoảng thời gian</div>
+          <div class="grid2">
+            <div>
+              <div class="muted small">Range A</div>
+              <div class="row gap">
+                <input id="aStart" class="input" type="date" />
+                <input id="aEnd" class="input" type="date" />
+              </div>
+            </div>
+            <div>
+              <div class="muted small">Range B</div>
+              <div class="row gap">
+                <input id="bStart" class="input" type="date" />
+                <input id="bEnd" class="input" type="date" />
+              </div>
+            </div>
+          </div>
+          <div class="row gap">
+            <button class="btn primary" id="btnCompareCustom">Compare</button>
+            <button class="btn" id="btnSwap">Swap</button>
+          </div>
+          <div class="compare" id="compareCustom">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="panel hidden" id="tab-settings">
+      <div class="grid2">
+        <div class="card">
+          <div class="h1">Goals</div>
+          <div class="row gap">
+            <label class="field">
+              <div class="muted small">Weekly pages</div>
+              <input id="gWeeklyPages" class="input" type="number" min="1" />
+            </label>
+            <label class="field">
+              <div class="muted small">Weekly books</div>
+              <input id="gWeeklyBooks" class="input" type="number" min="1" />
+            </label>
+          </div>
+          <div class="row gap">
+            <label class="field">
+              <div class="muted small">Monthly books</div>
+              <input id="gMonthlyBooks" class="input" type="number" min="1" />
+            </label>
+            <label class="field">
+              <div class="muted small">Yearly books</div>
+              <input id="gYearlyBooks" class="input" type="number" min="1" />
+            </label>
+          </div>
+          <div class="row gap">
+            <label class="field">
+              <div class="muted small">Daily min pages (để giữ streak)</div>
+              <input id="gDailyMin" class="input" type="number" min="0" />
+            </label>
+            <label class="field">
+              <div class="muted small">Weekly start day</div>
+              <select id="gWeekStart" class="input">
+                <option value="1">Thứ 2</option>
+                <option value="0">Chủ nhật</option>
+              </select>
+            </label>
+          </div>
+          <div class="row gap">
+            <button class="btn primary" id="btnSaveSettings">Save</button>
+            <button class="btn danger" id="btnReset">Reset dữ liệu</button>
+          </div>
+          <div class="muted small">
+            Vân khuyên Daily min = <b>20</b> hoặc <b>30</b> để không gãy streak vô lý.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h1">Gamification</div>
+          <div class="muted">Điểm: +1 / 5 trang, +20 hoàn thành sách, +50 đạt 500/tuần</div>
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="muted">Tổng điểm</div>
+              <div class="h2" id="totalPoints">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Shield (để không gãy daily)</div>
+              <div class="h2" id="shields">2</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Books / năm</div>
+              <div class="h2" id="yearBooks">—</div>
+            </div>
+            <div class="mini">
+              <div class="muted">Pages / năm</div>
+              <div class="h2" id="yearPages">—</div>
+            </div>
+          </div>
+          <div class="note">
+            Tip: Nếu tuần này đủ 500 trang rồi, cứ đọc thêm để “đệm” tuần sau. App sẽ show trend rõ.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+  <div class="modal hidden" id="modalLog">
+    <div class="modal-content">
+      <div class="row between">
+        <div class="h1">Log đọc</div>
+        <button class="ghost" id="closeLog">✕</button>
+      </div>
+      <div class="row gap">
+        <input id="customPages" class="input" type="number" min="1" placeholder="Số trang" />
+        <input id="customMinutes" class="input" type="number" min="0" placeholder="Phút (tuỳ chọn)" />
+      </div>
+      <div class="row gap">
+        <input id="customNote" class="input" placeholder="Note 1 câu (tuỳ chọn)"/>
+      </div>
+      <div class="row gap">
+        <button class="btn primary" id="submitLog">Save</button>
+        <button class="btn" id="cancelLog">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modalData">
+    <div class="modal-content">
+      <div class="row between">
+        <div class="h1">Data</div>
+        <button class="ghost" id="closeData">✕</button>
+      </div>
+      <div class="muted small">Export JSON để backup, hoặc Import để restore.</div>
+      <div class="row gap wrap">
+        <button class="btn primary" id="btnExport">Export</button>
+        <label class="btn">
+          Import <input id="fileImport" type="file" accept="application/json" style="display:none" />
+        </label>
+      </div>
+      <textarea id="dataArea" class="input" rows="10" placeholder="JSON sẽ hiện ở đây khi export…"></textarea>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
