@@ -838,6 +838,11 @@ function bindEvents(){
   $("cancelLog").onclick = closeLogModal;
   $("submitLog").onclick = submitCustomLog;
 
+  // Tap outside modal-content to close (mobile friendly)
+$("modalLog").addEventListener("click", (e) => {
+  if (e.target && e.target.id === "modalLog") closeLogModal();
+});
+  
   $("btnAddBook").onclick = addBook;
   $("btnFilterAll").onclick = () => { state.ui.bookFilter="all"; renderAll(); };
   $("btnFilterReading").onclick = () => { state.ui.bookFilter="reading"; renderAll(); };
