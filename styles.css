@@ -117,6 +117,3 @@ body{
   width:min(560px, 100%);
   background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px;
 }
-
-.modal { pointer-events: auto; }
-.modal-content { pointer-events: auto; }
