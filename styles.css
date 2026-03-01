@@ -117,3 +117,8 @@ body{
   width:min(560px, 100%);
   background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px;
 }
+
+/* Fix iOS modal click issues */
+.modal { z-index: 9999; }
+.modal-content { position: relative; z-index: 10000; }
+#closeLog { position: relative; z-index: 10001; }
