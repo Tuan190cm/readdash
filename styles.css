@@ -38,7 +38,7 @@ body{
 }
 .tab.active{background:var(--card); border-color:#3a3a40}
 .panel{display:block}
-.hidden{display:none}
+.hidden{display:none !important}
 .grid2{display:grid; grid-template-columns:1fr; gap:12px}
 @media(min-width:900px){ .grid2{grid-template-columns:1fr 1fr;} }
 
@@ -122,3 +122,4 @@ body{
 .modal { z-index: 9999; }
 .modal-content { position: relative; z-index: 10000; }
 #closeLog { position: relative; z-index: 10001; }
+.modal.hidden{display:none !important;}
